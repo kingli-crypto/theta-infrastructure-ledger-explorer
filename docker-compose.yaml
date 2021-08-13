@@ -17,6 +17,8 @@ services:
       dockerfile: ./crawler/Dockerfile
     volumes:
       - ./deploy/config.cfg:/app/src/crawler/config.cfg:ro
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   explorer:
     restart: unless-stopped
@@ -28,8 +30,8 @@ services:
     volumes:
       - ./deploy/config.cfg:/app/src/explorer-api/config.cfg:ro
     ports:
-      - 8443:8443
-      - 2096:2096
+      - 8001:8443
+      - 8002:2096
 
   frontend:
     restart: unless-stopped
@@ -41,7 +43,7 @@ services:
     volumes:
       - ./deploy/config.js:/app/src/config.js:ro
     ports:
-      - 3000:3000
+      - 8003:3000
     environment:
       - PORT=3000
 

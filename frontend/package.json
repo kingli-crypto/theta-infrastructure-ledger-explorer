@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "export PORT=4000 && node server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "prod": "gulp build-js && node server.js"
   },
   "main": "server.js",
   "engines": {

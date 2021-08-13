@@ -2,10 +2,9 @@
 FROM node:12.19.0
 ENV NODE_ENV=production
 
-
-WORKDIR /app/src
+WORKDIR /app
 COPY . .
 
-RUN npm install
+RUN npm install --also=dev
 
-CMD [ "node", "server.js" ]
+CMD [ "npm", "run", "prod" ]
