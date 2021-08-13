@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+
+  crawler:
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    build:
+      context: ./backend
+      dockerfile: ./crawler/Dockerfile
+    volumes:
+      - ./deploy/config.cfg:/app/src/crawler/config.cfg:ro
+
+  explorer:
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    build:
+      context: ./backend
+      dockerfile: ./explorer-api/Dockerfile
+    volumes:
+      - ./deploy/config.cfg:/app/src/explorer-api/config.cfg:ro
+    ports:
+      - 8443:8443
+      - 2096:2096
+
+  frontend:
+    restart: unless-stopped
+    depends_on:
+      - explorer
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./deploy/config.js:/app/src/config.js:ro
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000
+
+volumes:
+  mongo-data:

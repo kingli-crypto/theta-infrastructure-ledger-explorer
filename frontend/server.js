@@ -5,7 +5,7 @@ var webpack = require('webpack');
 var config = require('./webpack.config.js');
 var fs = require('fs');
 var compression = require('compression')
-let port = process.env.PORT || 443;
+let port = process.env.PORT || 3000;
 
 
 var app = express();
@@ -36,13 +36,13 @@ app.get('*', function (req, res) {
 
 
 
-var privateKey = fs.readFileSync('./cert/star_thetatoken_org.key');
-var certificate = fs.readFileSync('./cert/star_thetatoken_org.crt');
-var options = {
-  key: privateKey,
-  cert: certificate
-};
-var h2 = require('spdy').createServer(options, app);
+// var privateKey = fs.readFileSync('./cert/star_thetatoken_org.key');
+// var certificate = fs.readFileSync('./cert/star_thetatoken_org.crt');
+// var options = {
+//   key: privateKey,
+//   cert: certificate
+// };
+var h2 = require('http').createServer({}, app);
 
 
 h2.listen(port, function (err) {
